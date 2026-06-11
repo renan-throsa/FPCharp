@@ -1,19 +1,27 @@
 ﻿using System;
+using static ClassLibrary.Utils.F;
 
 namespace ClassLibrary
 {
     public struct NoneType { }
-    public record None<T> : Option<T> { }
-    public abstract record Option<T>
+
+    public struct Option<T>
     {
+        readonly T value;
+        readonly bool isSome;
+        internal Option(T value)
+        {
+            this.value = value ?? throw new ArgumentNullException();
+            this.isSome = true;
+        }
+
         /// <summary>
         /// This effectively tells the runtime that an instance of NoneType can be used where an
         /// Option<T>  is  expected and  instructs the  runtime to  convert the  NoneType to a
         /// None<T>.
         /// </summary>
         /// <param name="_"></param>
-        public static implicit operator Option<T>(NoneType _)
-            => new None<T>();
+        public static implicit operator Option<T>(NoneType _) => default;
 
         /// <summary>
         /// Implicit conversion from T to Option<T>. This means that a T can be used where an Option<T> is expected 
@@ -21,17 +29,16 @@ namespace ClassLibrary
         /// </summary>
         /// <param name="value"></param>
         public static implicit operator Option<T>(T value)
-            => value is null ? new None<T>() : new Some<T>(value);
+            => value is null ? None : Some(value);
 
-    }
-
-    public record Some<T> : Option<T>
-    {
-        private T Value { get; }
-
-        public Some(T value) => Value = value ?? throw new ArgumentNullException();
-
-        public void Deconstruct(out T value) => value = Value;
+        /// <summary>
+        /// Once an Option is constructed, the only way to interact with it is with Match.
+        /// </summary>
+        /// <typeparam name="R"></typeparam>
+        /// <param name="None"></param>
+        /// <param name="Some"></param>
+        /// <returns></returns>
+        public R Match<R>(Func<R> None, Func<T, R> Some) => isSome ? Some(value!) : None();
 
     }
 
