@@ -14,6 +14,7 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
 
+            //Looking up data in a collection
             new NameValueCollection()
                 .Lookup("green")
                 .ForEach(WriteLine);
@@ -24,12 +25,15 @@ namespace ConsoleApp
 
 
             var greet = (string name) => $"hello, {name}";
-
             Option<string> notEmpty = "Dean";
-
             notEmpty.Map(greet).ForEach(WriteLine);
 
+            // Performing side effects with ForEach
             Some("John").ForEach(name => WriteLine($"Hello {name}"));
+            IEnumerable<string> names = new[] { "Constance", "Albert" };
+            var toUpper = (string s) => s.ToUpper();
+            names.Map(toUpper).ForEach(WriteLine);
+
 
         }
 

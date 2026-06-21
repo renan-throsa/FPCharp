@@ -1,11 +1,14 @@
 ﻿using ClassLibrary.Extentions;
 using System;
+using System.Xml.Linq;
 using static ClassLibrary.Utils.F;
-using Unit = System.ValueTuple;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ClassLibrary
 {
-    public struct NoneType { }
+    public struct NoneType {
+        public override string ToString() => "None";
+    }
 
     public struct Option<T>
     {
@@ -45,7 +48,7 @@ namespace ClassLibrary
 
         public Option<R> Map<R>(Func<T, R> f) => this.Match(None: () => None, Some: (t) => Some(f(t)));
 
-        public Option<Unit> ForEach(Action<T> action)=> Map(action.ToFunc());
+        public Option<NoneType> ForEach(Action<T> action)=> Map(action.ToFunc());
 
     }
 
