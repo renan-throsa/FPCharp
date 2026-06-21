@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ClassLibrary.Extentions;
+using System;
 using static ClassLibrary.Utils.F;
+using Unit = System.ValueTuple;
 
 namespace ClassLibrary
 {
@@ -7,9 +9,10 @@ namespace ClassLibrary
 
     public struct Option<T>
     {
-        readonly T value;
-        readonly bool isSome;
-        internal Option(T value)
+        private readonly T value;
+        private readonly bool isSome;
+
+        public Option(T value)
         {
             this.value = value ?? throw new ArgumentNullException();
             this.isSome = true;
@@ -37,8 +40,12 @@ namespace ClassLibrary
         /// <typeparam name="R"></typeparam>
         /// <param name="None"></param>
         /// <param name="Some"></param>
-        /// <returns></returns>
-        public R Match<R>(Func<R> None, Func<T, R> Some) => isSome ? Some(value!) : None();
+        /// <returns>Returns the type parameterized &#60;R&#62;</returns>
+        private R Match<R>(Func<R> None, Func<T, R> Some) => isSome ? Some(value!) : None();
+
+        public Option<R> Map<R>(Func<T, R> f) => this.Match(None: () => None, Some: (t) => Some(f(t)));
+
+        public Option<Unit> ForEach(Action<T> action)=> Map(action.ToFunc());
 
     }
 

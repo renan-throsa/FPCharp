@@ -1,28 +1,36 @@
 ﻿using ClassLibrary;
+using ClassLibrary.Extentions;
 using System.Collections.Specialized;
-
+using static System.Console;
 using static ClassLibrary.Utils.F;
 using static ClassLibrary.Utils.Int;
 
 namespace ConsoleApp
 {
     internal class Program
-    {       
-
-        static string Greet(Option<string> greetee)
-            => greetee.Match(None: () => "Sorry, who?", Some: (name) => $"Hello, {name}");      
+    {
 
 
         static void Main(string[] args)
         {
-            Console.WriteLine(Greet(None));
-            Console.WriteLine(Greet(Some("John")));
 
-            var empty = new NameValueCollection();
-            Option<string> green = empty["green"];
-            Console.WriteLine(green);
+            new NameValueCollection()
+                .Lookup("green")
+                .ForEach(WriteLine);
 
-            Console.WriteLine(Parse("10"));
+            new Dictionary<string, string>()
+                .Lookup("blue")
+                .ForEach(WriteLine);
+
+
+            var greet = (string name) => $"hello, {name}";
+
+            Option<string> notEmpty = "Dean";
+
+            notEmpty.Map(greet).ForEach(WriteLine);
+
+            Some("John").ForEach(name => WriteLine($"Hello {name}"));
+
         }
 
     }
