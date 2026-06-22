@@ -41,6 +41,15 @@ namespace ConsoleApp
             parseAge("notAnAge").ForEach(WriteLine);
             parseAge("180").ForEach(WriteLine);
 
+            // Flattening nested lists with Bind
+
+            var name = new List<List<string>> {
+                new List<string> { "Hi", "How are you?" },
+                new List<string> { "Hope this was helpful" }
+            };
+
+            var nested = name.Map(x => x).Bind(y => y).ForEach(WriteLine);
+
         }
 
     }
