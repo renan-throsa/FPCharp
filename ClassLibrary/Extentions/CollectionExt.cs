@@ -15,7 +15,7 @@ namespace ClassLibrary.Extentions
         public static IEnumerable<R> Map<T,R>(this IEnumerable<T> ts, Func<T, R> f) 
             => ts.Select(f);
 
-        public static IEnumerable<NoneType> ForEach<T>(this IEnumerable<T> ts, Action<T> action)
+        public static IEnumerable<Unit> ForEach<T>(this IEnumerable<T> ts, Action<T> action)
             => ts.Map(action.ToFunc()).ToImmutableList();
 
     }

@@ -1,18 +1,14 @@
 ﻿using ClassLibrary.Extentions;
-using System;
-using System.Xml.Linq;
 using static ClassLibrary.Utils.F;
-using static System.Net.Mime.MediaTypeNames;
+using Unit = System.ValueTuple;
+
 
 namespace ClassLibrary
-{
-    public struct NoneType {
-        public override string ToString() => "None";
-    }
+{    
 
     public struct Option<T>
     {
-        private readonly T value;
+        private readonly T? value;
         private readonly bool isSome;
 
         public Option(T value)
@@ -27,7 +23,7 @@ namespace ClassLibrary
         /// None<T>.
         /// </summary>
         /// <param name="_"></param>
-        public static implicit operator Option<T>(NoneType _) => default;
+        public static implicit operator Option<T>(Unit _) => default;
 
         /// <summary>
         /// Implicit conversion from T to Option<T>. This means that a T can be used where an Option<T> is expected 
@@ -43,12 +39,23 @@ namespace ClassLibrary
         /// <typeparam name="R"></typeparam>
         /// <param name="None"></param>
         /// <param name="Some"></param>
-        /// <returns>Returns the type parameterized &#60;R&#62;</returns>
-        private R Match<R>(Func<R> None, Func<T, R> Some) => isSome ? Some(value!) : None();
+        /// <returns>Returns the inner value parameterized &#60;R&#62; of the Option.</returns>
+        public R Match<R>(Func<R> None, Func<T, R> Some) => isSome ? Some(value!) : None();
 
-        public Option<R> Map<R>(Func<T, R> f) => this.Match(None: () => None, Some: (t) => Some(f(t)));
+        public Option<R> Map<R>(Func<T, R> f) => Match(() => None, (t) => Some(f(t)));
 
-        public Option<NoneType> ForEach(Action<T> action)=> Map(action.ToFunc());
+        public Option<Unit> ForEach(Action<T> action) => Map(action.ToFunc());
+
+        /// <summary>
+        /// Bind takes an Option-returning function and applies the function to the inner value of the Option.
+        /// </summary>
+        /// <typeparam name="R"></typeparam>
+        /// <param name="opt"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public Option<R> Bind<R>(Func<T, Option<R>> f) => Match(() => None, f);
+
+        public override string ToString() => isSome ? value.ToString() : "None";
 
     }
 

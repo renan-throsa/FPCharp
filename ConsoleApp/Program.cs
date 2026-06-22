@@ -1,9 +1,10 @@
 ﻿using ClassLibrary;
 using ClassLibrary.Extentions;
+using ClassLibrary.Utils;
 using System.Collections.Specialized;
-using static System.Console;
 using static ClassLibrary.Utils.F;
 using static ClassLibrary.Utils.Int;
+using static System.Console;
 
 namespace ConsoleApp
 {
@@ -34,6 +35,11 @@ namespace ConsoleApp
             var toUpper = (string s) => s.ToUpper();
             names.Map(toUpper).ForEach(WriteLine);
 
+            // Combining Option-returning functions
+            Func<string, Option<Age>> parseAge = s => Int.Parse(s).Bind(Age.Create);
+            parseAge("26").ForEach(WriteLine);
+            parseAge("notAnAge").ForEach(WriteLine);
+            parseAge("180").ForEach(WriteLine);
 
         }
 
