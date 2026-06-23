@@ -4,7 +4,7 @@ using Unit = System.ValueTuple;
 
 
 namespace ClassLibrary
-{    
+{
 
     public struct Option<T>
     {
@@ -54,6 +54,8 @@ namespace ClassLibrary
         /// <param name="func"></param>
         /// <returns></returns>
         public Option<R> Bind<R>(Func<T, Option<R>> f) => Match(() => None, f);
+
+        public Option<T> Where(Func<T, bool> pred) => Match(() => None, (t) => pred(t) ? Some(t) : None);
 
         public override string ToString() => isSome ? value.ToString() : "None";
 

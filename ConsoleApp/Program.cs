@@ -15,7 +15,8 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
 
-            //Looking up data in a collection
+            
+            Console.WriteLine("\n Looking up data in a collection \n");
             new NameValueCollection()
                 .Lookup("green")
                 .ForEach(WriteLine);
@@ -29,26 +30,36 @@ namespace ConsoleApp
             Option<string> notEmpty = "Dean";
             notEmpty.Map(greet).ForEach(WriteLine);
 
-            // Performing side effects with ForEach
+            
+            Console.WriteLine("\n Performing side effects with ForEach \n");
             Some("John").ForEach(name => WriteLine($"Hello {name}"));
             IEnumerable<string> names = new[] { "Constance", "Albert" };
             var toUpper = (string s) => s.ToUpper();
             names.Map(toUpper).ForEach(WriteLine);
 
-            // Combining Option-returning functions
+           
+            Console.WriteLine("\n Combining Option-returning functions \n");
             Func<string, Option<Age>> parseAge = s => Int.Parse(s).Bind(Age.Create);
             parseAge("26").ForEach(WriteLine);
             parseAge("notAnAge").ForEach(WriteLine);
             parseAge("180").ForEach(WriteLine);
 
-            // Flattening nested lists with Bind
-
-            var name = new List<List<string>> {
+            Console.WriteLine("\n Flattening nested lists with Bind \n");     
+            var nested = new List<List<string>> {
                 new List<string> { "Hi", "How are you?" },
-                new List<string> { "Hope this was helpful" }
+                new List<string> { "Hope this finds you well" },
+                new List<string> { "ok?" }
             };
 
-            var nested = name.Map(x => x).Bind(y => y).ForEach(WriteLine);
+            nested.Bind(x => x).ForEach(WriteLine);
+
+            
+            Console.WriteLine("\n Filtering values with Where \n");
+            bool IsNatural(int i) => i >= 0;
+            Option<int> ToNatural(string s) => Int.Parse(s).Where(IsNatural);
+            
+            ToNatural("2").ForEach(WriteLine);
+            ToNatural("-2").ForEach(WriteLine);
 
         }
 

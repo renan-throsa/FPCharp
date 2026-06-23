@@ -22,7 +22,10 @@ namespace ClassLibrary.Extentions
         {
             foreach (var t in ts)
                 foreach (var r in f(t))
+                {
+                    var x = r;
                     yield return r;
+                }
         }
 
 
