@@ -12,6 +12,22 @@ namespace ClassLibrary.Extentions
         public static Option<T> Lookup<K, T>(this IDictionary<K, T> dict, K key)
             => dict.TryGetValue(key, out T value) ? Some(value) : None;
 
+        public static ISet<R> Map<T, R>(this ISet<T> ts, Func<T, R> f)
+        {
+            var rs = new HashSet<R>();
+            foreach (var t in ts)
+                rs.Add(f(t));
+            return rs;
+        }
+
+        public static IDictionary<K, R> Map<K, T, R>(this IDictionary<K, T> dict, Func<T, R> f)
+        {
+            var rs = new Dictionary<K, R>();
+            foreach (var pair in dict)
+                rs[pair.Key] = f(pair.Value);
+            return rs;
+        }
+
         public static IEnumerable<R> Map<T, R>(this IEnumerable<T> ts, Func<T, R> f)
             => ts.Select(f);
 

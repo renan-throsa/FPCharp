@@ -49,7 +49,7 @@ namespace ClassLibrary
         /// <typeparam name="R"></typeparam>
         /// <param name="f"></param>
         /// <returns></returns>
-        public Option<R> Map<R>(Func<T, R> f) => Match(() => None, (t) => Some(f(t)));
+        public Option<R> Map<R>(Func<T, R> f) => Bind((t) => Some(f(t)));
 
         public Option<Unit> ForEach(Action<T> action) => Map(action.ToFunc());
 
