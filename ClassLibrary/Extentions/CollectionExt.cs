@@ -22,12 +22,21 @@ namespace ClassLibrary.Extentions
         {
             foreach (var t in ts)
                 foreach (var r in f(t))
-                {
-                    var x = r;
                     yield return r;
-                }
         }
 
+        /// <summary>
+        /// Takes un IEnumerable&#60;Option&#60;T&#62;&#62; and return IEnumerable&#60;T&#62; 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="R"></typeparam>
+        /// <param name="ts"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static IEnumerable<R> Bind<T, R>(this IEnumerable<T> ts, Func<T, Option<R>> func)
+            => ts.Bind((t) => { return func(t).AsEnumerable(); });
+
+        public static IEnumerable<R> Bind<T, R>(this Option<T> opt, Func<T, IEnumerable<R>> func) => opt.AsEnumerable().Bind(func);
 
     }
 }
