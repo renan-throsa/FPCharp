@@ -31,6 +31,5 @@ namespace ClassLibrary.Extentions
         public static Option<T> Where<T>(this Option<T> opt, Func<T, bool> pred) => opt.Match(() => None, (t) => pred(t) ? Some(t) : None);
 
 
-
     }
 }

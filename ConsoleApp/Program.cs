@@ -9,30 +9,15 @@ namespace ConsoleApp
 {
     internal class Program
     {
-
-
         static void Main(string[] args)
         {
 
-
-            WriteLine("\n Looking up data in a collection \n");
-            new NameValueCollection()
-                .Lookup("green")
-                .ForEach(WriteLine);
-
-            new Dictionary<string, string>()
-                .Lookup("blue")
-                .ForEach(WriteLine);
-
-
-            var greet = (string name) => $"hello, {name}";
-            Option<string> notEmpty = "Dean";
-            notEmpty.Map(greet).ForEach(WriteLine);
-
-
             WriteLine("\n Performing side effects with ForEach \n");
-            Some("John").ForEach(name => WriteLine($"Hello {name}"));
-            IEnumerable<string> names = new[] { "Constance", "Albert" };
+
+            var greet = (string name) => $"Salut, {name}";
+            Some("John").Map(greet).ForEach(WriteLine);
+
+            IEnumerable<string> names = ["Constance", "Albert"];
             var toUpper = (string s) => s.ToUpper();
             names.Map(toUpper).ForEach(WriteLine);
 
@@ -65,7 +50,6 @@ namespace ConsoleApp
 
             // Bind takes IEnumerable<Option<Age>> and returns un IEnumerable<Age>. Map returns un IEnumerable<int> 
             ages.Bind(x => x).Map(x => x.Value).Average();
-
 
         }
 

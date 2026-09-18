@@ -6,13 +6,13 @@ namespace ClassLibrary
 {
     public struct Option<T>
     {
-        private readonly T? value;
-        private readonly bool isSome;
+        private readonly T? _value;
+        private readonly bool _isSome;
 
         public Option(T value)
         {
-            this.value = value ?? throw new ArgumentNullException();
-            this.isSome = true;
+            _value = value ?? throw new ArgumentNullException();
+            _isSome = true;
         }
 
         /// <summary>
@@ -38,19 +38,21 @@ namespace ClassLibrary
         /// <param name="None"></param>
         /// <param name="Some"></param>
         /// <returns>Returns the inner value parameterized &#60;R&#62; of the Option.</returns>
-        public R Match<R>(Func<R> None, Func<T, R> Some) => isSome ? Some(value!) : None();
+        public R Match<R>(Func<R> None, Func<T, R> Some) => _isSome ? Some(_value!) : None();
 
-       
+
         /// <summary>
         /// returns the inner value as un IEnumerable &#60;T&#62;
         /// </summary>
         /// <returns></returns>
         public IEnumerable<T> AsEnumerable()
         {
-            if (isSome) yield return value!;
+            if (_isSome) yield return _value!;
         }
 
-        public override string ToString() => isSome ? value.ToString() : "None";
+        #pragma warning disable CS8603 // Possível retorno de referência nula.
+        public override string ToString() => _isSome ? _value!.ToString() : "None";
+        #pragma warning restore CS8603 // Possível retorno de referência nula.
 
     }
 
