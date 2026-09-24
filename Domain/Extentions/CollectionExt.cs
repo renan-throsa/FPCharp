@@ -1,9 +1,10 @@
 ﻿using System.Collections.Specialized;
 using Unit = System.ValueTuple;
 using System.Collections.Immutable;
-using static ClassLibrary.Utils.F;
+using static Domain.Utils.F;
+using Domain.Models;
 
-namespace ClassLibrary.Extentions
+namespace Domain.Extentions
 {
     public static class CollectionExt
     {

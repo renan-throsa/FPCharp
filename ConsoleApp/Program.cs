@@ -1,14 +1,14 @@
-﻿using ClassLibrary;
-using ClassLibrary.Extentions;
-using ClassLibrary.Utils;
-using System.Collections.Specialized;
-using static ClassLibrary.Utils.F;
+﻿using Domain.Extentions;
+using Domain.Models;
+using Domain.Utils;
+using static Domain.Utils.F;
 using static System.Console;
 
 namespace ConsoleApp
 {
     internal class Program
     {
+
         static void Main(string[] args)
         {
 
@@ -46,12 +46,26 @@ namespace ConsoleApp
             ToNatural("-2").ForEach(WriteLine);
 
             WriteLine("\n Combining Option and IEnumerable with Bind \n");
-            IEnumerable<Option<Age>> ages = new[] { Age.Create(33), Age.Create(19), Age.Create(119), Age.Create(-1), Age.Create(150) };
 
+            IEnumerable<Option<Age>> ages = [Age.Create(33), Age.Create(19), Age.Create(119), Age.Create(-1), Age.Create(150)];
             // Bind takes IEnumerable<Option<Age>> and returns un IEnumerable<Age>. Map returns un IEnumerable<int> 
             ages.Bind(x => x).Map(x => x.Value).Average();
 
+            WriteLine("\n Performing function composition \n");
+            Some("Antoine ").Compose(greet, toUpper).ForEach(WriteLine);
+
+            WriteLine("\n Capturing error details with Either \n");
+
+            WriteLine(Render(Either<string, int>(200)));
+            WriteLine(Render(Right(200)));
+
+            WriteLine(Render(Either<string, int>("opps")));
+            WriteLine(Render(Left("opps")));
         }
+
+        static string Render(Either<string, int> ei) =>
+            ei.Match(Left: l => $"Invalid value: {l}", Right: r => $"The result is: {r}");
+
 
     }
 }

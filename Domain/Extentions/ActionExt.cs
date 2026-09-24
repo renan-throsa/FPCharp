@@ -1,7 +1,7 @@
 ﻿using Unit = System.ValueTuple;
-using static ClassLibrary.Utils.F;
+using static Domain.Utils.F;
 
-namespace ClassLibrary.Extentions
+namespace Domain.Extentions
 {
     public static class ActionExt
     {

@@ -1,6 +1,7 @@
-﻿using static ClassLibrary.Utils.F;
+﻿using Domain.Models;
+using static Domain.Utils.F;
 
-namespace ClassLibrary.Utils
+namespace Domain.Utils
 {
     public class Age
     {

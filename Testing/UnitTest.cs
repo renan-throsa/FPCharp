@@ -1,6 +1,6 @@
-﻿using ClassLibrary;
-using ClassLibrary.Extentions;
-using ClassLibrary.Utils;
+﻿using Domain.Extentions;
+using Domain.Models;
+using Domain.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;

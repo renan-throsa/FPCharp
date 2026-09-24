@@ -1,7 +1,8 @@
-﻿using static ClassLibrary.Utils.F;
+﻿using Domain.Models;
+using static Domain.Utils.F;
 using Unit = System.ValueTuple;
 
-namespace ClassLibrary.Extentions
+namespace Domain.Extentions
 {
     public static class OptionExt
     {
@@ -30,6 +31,8 @@ namespace ClassLibrary.Extentions
 
         public static Option<T> Where<T>(this Option<T> opt, Func<T, bool> pred) => opt.Match(() => None, (t) => pred(t) ? Some(t) : None);
 
+        public static Option<S> Compose<T, R, S>(this Option<T> opt, Func<T, R> f, Func<R, S> g)
+            => opt.Match(() => None, (t) => Some(g(f(t))));
 
     }
 }
